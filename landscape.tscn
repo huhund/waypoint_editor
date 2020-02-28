@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="PlaneMesh" id=1]
+
+[sub_resource type="SphereMesh" id=2]
+
+[node name="landscape" type="Spatial"]
+
+[node name="GroundMeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="SphereMeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, -35.5444, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="SphereMeshInstance3" type="MeshInstance" parent="."]
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 70.4749, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="SphereMeshInstance4" type="MeshInstance" parent="."]
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 15.3093, -7.62939e-06, 48.4258 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="SphereMeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, -24.6907 )
+mesh = SubResource( 2 )
+material/0 = null

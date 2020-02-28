@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://data/waypoint_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+num_waypoints = 3
+waypoints = [ Vector3( -20.4452, 0, 33.0816 ), Vector3( 4.8193, 0, 26.092 ), Vector3( 26.7969, 0, 4.29545 ) ]
