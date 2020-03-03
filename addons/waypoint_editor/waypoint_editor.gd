@@ -36,7 +36,6 @@ func enabled_changed(enable):
 func forward_spatial_gui_input(camera, event):
 	if !enabled:
 		return false
-	
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.is_pressed():
 			var pos = camera.project_ray_origin(event.position)
@@ -51,7 +50,6 @@ func forward_spatial_gui_input(camera, event):
 func project_to_floor(origin, ray, height):
 	if ray.y == 0:
 		return origin;
-	
 	var kx = -ray.x / ray.y
 	var kz = -ray.z / ray.y
 	origin = origin - Vector3(0,1,0) * height
@@ -59,13 +57,18 @@ func project_to_floor(origin, ray, height):
 
 # creates a new node from clicks
 func create_node(pos):
-	print(pos)
+	print("creating node at " + str(pos))
+	var undo_redo = get_undo_redo()
+	undo_redo.create_action("Create Node")
 	var wp = preload("res://addons/waypoint_editor/waypoint.tscn").instance()
 	var root = get_tree().get_edited_scene_root()
-	root.add_child(wp)
-	wp.set_owner(get_tree().get_edited_scene_root())
-	wp.translation = pos
-	wp.name = "WP" # godot will add postfix to name
+	undo_redo.add_do_method(root, "add_child", wp) #root.add_child(wp)
+	undo_redo.add_do_method(wp, "set_owner", root) #wp.set_owner(root)
+	undo_redo.add_do_property(wp, "translation", pos) #wp.translation = pos
+	undo_redo.add_do_property(wp, "name", "WP") #wp.name = "WP" # godot will add postfix to name
+	undo_redo.add_do_reference(wp)
+	undo_redo.add_undo_method(root, "remove_child", wp)
+	undo_redo.commit_action()
 	
 func count_wps():
 	var count = 0
@@ -73,20 +76,17 @@ func count_wps():
 	for node in children:
 		if node is wpClass: 
 			count += 1
-
 	return count	
 
 # saves the waypoints in a custom resources
 func export():
 	var res = wpDataClass.new()
-
 	var count = 0
 	var children = get_tree().get_edited_scene_root().get_children()
 	for node in children:
 		if node is wpClass:
 			count += 1
-			res.waypoints.push_back(node.translation)
-			
+			res.waypoints.push_back(node.translation)		
 	res.num_waypoints = count
 	ResourceSaver.save("res://data/waypoint_data.tres", res)
 	print(str(count) + " waypoints exported to data/waypoint_data.tres")
